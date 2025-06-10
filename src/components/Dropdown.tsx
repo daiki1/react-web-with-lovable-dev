@@ -18,6 +18,7 @@ export interface DropdownProps {
   className?: string;
   label?: string;
   error?: string;
+  icon?: React.ReactNode;
 }
 
 /**
@@ -33,6 +34,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   className,
   label,
   error,
+  icon,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -85,12 +87,15 @@ const Dropdown: React.FC<DropdownProps> = ({
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
         >
-          <span className={cn(
-            'block truncate',
-            !selectedOption && 'text-gray-500'
-          )}>
-            {selectedOption ? selectedOption.label : placeholder}
-          </span>
+          <div className="flex items-center">
+            {icon && <span className="mr-2">{icon}</span>}
+            <span className={cn(
+              'block truncate',
+              !selectedOption && 'text-gray-500'
+            )}>
+              {selectedOption ? selectedOption.label : placeholder}
+            </span>
+          </div>
           <ChevronDown 
             className={cn(
               'absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 transition-transform duration-200',

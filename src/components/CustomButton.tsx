@@ -55,7 +55,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
       >
         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {!isLoading && icon && <span className="mr-2">{icon}</span>}
-        {children}
+        <span>{children}</span>
       </button>
     );
   }
