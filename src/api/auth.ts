@@ -14,10 +14,11 @@ export interface RegisterRequest {
 
 export interface ForgotPasswordRequest {
   email: string;
+  sendAsCode?: boolean; 
 }
 
 export interface ResetPasswordRequest {
-  code: string;
+  token: string;
   newPassword: string;
   email: string;
 }
@@ -44,7 +45,7 @@ export const authAPI = {
     api.post('/api/auth/register', data),
 
   forgotPassword: (data: ForgotPasswordRequest): Promise<{ data: { message: string } }> =>
-    api.post('/api/auth/request-password-reset', data),
+    api.post('/api/auth/request-password-reset', {...data, sendAsCode: true,}),
 
   resetPassword: (data: ResetPasswordRequest): Promise<{ data: { message: string } }> =>
     api.post('/api/auth/reset-password', data),

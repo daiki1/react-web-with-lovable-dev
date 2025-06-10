@@ -44,7 +44,7 @@ const ResetPassword: React.FC = () => {
     
     try {
       await authAPI.resetPassword({
-        code: data.code,
+        token: data.code,
         newPassword: data.newPassword,
         email,
       });
