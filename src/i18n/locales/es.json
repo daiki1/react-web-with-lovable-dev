@@ -1,0 +1,127 @@
+
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "search": "Buscar",
+    "clear": "Limpiar",
+    "submit": "Enviar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "forgotPassword": "Olvidé mi Contraseña",
+    "resetPassword": "Restablecer Contraseña",
+    "username": "Nombre de Usuario",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "rememberMe": "Recordarme",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "invalidCredentials": "Credenciales inválidas",
+    "passwordResetSent": "Código de restablecimiento enviado a tu correo",
+    "passwordResetSuccess": "Contraseña restablecida exitosamente",
+    "registrationSuccess": "Registro exitoso",
+    "loginSuccess": "Inicio de sesión exitoso",
+    "logoutSuccess": "Sesión cerrada exitosamente",
+    "sessionExpired": "Sesión expirada, por favor inicia sesión nuevamente",
+    "resetCode": "Código de Restablecimiento",
+    "newPassword": "Nueva Contraseña",
+    "repeatPassword": "Repetir Contraseña",
+    "requestCode": "Solicitar Código",
+    "enterResetCode": "Ingresa el código de 5 dígitos enviado a tu correo"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Por favor ingresa un correo electrónico válido",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "minLength": "Se requieren mínimo {{count}} caracteres",
+    "maxLength": "Máximo {{count}} caracteres permitidos"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "users": "Usuarios",
+    "auditLogs": "Registros de Auditoría",
+    "roleTest": "Prueba Basada en Roles",
+    "localization": "Localización",
+    "changeLanguage": "Cambiar Idioma"
+  },
+  "pages": {
+    "home": {
+      "welcome": "Bienvenido al Portal de Administración",
+      "description": "Gestiona tu aplicación con facilidad"
+    },
+    "users": {
+      "title": "Gestión de Usuarios",
+      "addUser": "Agregar Usuario",
+      "editUser": "Editar Usuario",
+      "deleteUser": "Eliminar Usuario",
+      "activateUser": "Activar Usuario",
+      "deactivateUser": "Desactivar Usuario",
+      "roles": "Roles",
+      "status": "Estado",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "createdAt": "Creado",
+      "lastLogin": "Último Acceso",
+      "actions": "Acciones",
+      "userDeleted": "Usuario eliminado exitosamente",
+      "userUpdated": "Usuario actualizado exitosamente",
+      "confirmDelete": "¿Estás seguro de que quieres eliminar este usuario?"
+    },
+    "audit": {
+      "title": "Registros de Auditoría",
+      "timestamp": "Fecha y Hora",
+      "user": "Usuario",
+      "action": "Acción",
+      "resource": "Recurso",
+      "details": "Detalles",
+      "ipAddress": "Dirección IP"
+    },
+    "roleTest": {
+      "title": "Pruebas de API Basadas en Roles",
+      "description": "Prueba diferentes endpoints de API según tu rol",
+      "testAll": "Probar API Pública",
+      "testUser": "Probar API de Usuario",
+      "testAdmin": "Probar API de Admin",
+      "testAuditor": "Probar API de Auditor",
+      "response": "Respuesta",
+      "testing": "Probando..."
+    },
+    "localization": {
+      "title": "Localización",
+      "description": "Selecciona tu ubicación",
+      "country": "País",
+      "state": "Estado",
+      "city": "Ciudad",
+      "selectCountry": "Selecciona un país",
+      "selectState": "Selecciona un estado",
+      "selectCity": "Selecciona una ciudad",
+      "loadMoreCities": "Cargar Más Ciudades",
+      "noMoreCities": "No hay más ciudades disponibles"
+    }
+  },
+  "roles": {
+    "admin": "Administrador",
+    "user": "Usuario",
+    "auditor": "Auditor"
+  },
+  "languages": {
+    "en": "Inglés",
+    "es": "Español"
+  }
+}
