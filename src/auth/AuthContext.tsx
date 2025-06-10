@@ -85,6 +85,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
  * Decode JWT token and extract user information
  */
 const decodeUserFromToken = (token: string): User | null => {
+  
   try {
     // Validate token is a non-empty string
     if (!token || typeof token !== 'string' || token.trim() === '') {
@@ -151,7 +152,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Check for existing token on mount
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('token');
     
     if (token) {
       const user = decodeUserFromToken(token);
@@ -159,7 +160,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         dispatch({ type: 'AUTH_SUCCESS', payload: user });
       } else {
         // Token is invalid or expired, clear storage
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
       }
@@ -171,20 +172,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       const response = await authAPI.login({ username, password });
-      const { accessToken, refreshToken } = response.data;
+      const { token, refreshToken } = response.data;
       
-      // Validate accessToken exists and is a string
-      if (!accessToken || typeof accessToken !== 'string') {
+      // Validate token exists and is a string
+      if (!token || typeof token !== 'string') {
         throw new Error('Invalid access token received from server');
       }
       
       // Decode user information from JWT token
-      const user = decodeUserFromToken(accessToken);
+      const user = decodeUserFromToken(token);
       if (!user) {
         throw new Error('Invalid token received - unable to decode user information');
       }
       
-      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
       // Remove the old user storage since we're getting data from token
       localStorage.removeItem('user');
@@ -213,20 +214,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       const response = await authAPI.register({ username, email, password });
-      const { accessToken, refreshToken } = response.data;
+      const { token, refreshToken } = response.data;
       
-      // Validate accessToken exists and is a string
-      if (!accessToken || typeof accessToken !== 'string') {
+      // Validate token exists and is a string
+      if (!token || typeof token !== 'string') {
         throw new Error('Invalid access token received from server');
       }
       
       // Decode user information from JWT token
-      const user = decodeUserFromToken(accessToken);
+      const user = decodeUserFromToken(token);
       if (!user) {
         throw new Error('Invalid token received - unable to decode user information');
       }
       
-      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
       // Remove the old user storage since we're getting data from token
       localStorage.removeItem('user');
@@ -251,7 +252,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     dispatch({ type: 'AUTH_LOGOUT' });

@@ -23,9 +23,9 @@ import { useToast } from '../../hooks/use-toast';
 interface AuditLog {
   id: number;
   timestamp: string;
-  user: string;
-  action: string;
-  resource: string;
+  userId: number;
+  operation: string;  
+  resource: string;  
   details: string;
   ipAddress: string;
   userAgent?: string;
@@ -59,14 +59,14 @@ const AuditLogs: React.FC = () => {
   useEffect(() => {
     // Filter logs based on search term and action filter
     let filtered = logs.filter(log =>
-      log.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.resource.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.details.toLowerCase().includes(searchTerm.toLowerCase())
+      (log.userId && log.userId.toString().toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (log.operation && log.operation.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (log.resource && log.resource.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (log.details && log.details.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     if (actionFilter) {
-      filtered = filtered.filter(log => log.action === actionFilter);
+      filtered = filtered.filter(log => log.operation === actionFilter);
     }
 
     setFilteredLogs(filtered);
@@ -128,7 +128,7 @@ const AuditLogs: React.FC = () => {
   };
 
   // Get unique actions for filter dropdown
-  const uniqueActions = Array.from(new Set(logs.map(log => log.action)));
+  const uniqueActions = Array.from(new Set(logs.map(log => log.operation)));
   const actionOptions = [
     { value: '', label: 'All Actions' },
     ...uniqueActions.map(action => ({ value: action, label: action }))
@@ -229,12 +229,12 @@ const AuditLogs: React.FC = () => {
                       <div className="flex items-center">
                         <User className="h-4 w-4 text-gray-400 mr-2" />
                         <span className="text-sm font-medium text-gray-900">
-                          {log.user}
+                          {log.userId}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {getActionBadge(log.action)}
+                      {getActionBadge(log.operation)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {log.resource}
@@ -317,14 +317,14 @@ const AuditLogs: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('pages.audit.user')}
                   </label>
-                  <p className="text-sm text-gray-900">{selectedLog.user}</p>
+                  <p className="text-sm text-gray-900">{selectedLog.userId}</p>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('pages.audit.action')}
                   </label>
-                  <div>{getActionBadge(selectedLog.action)}</div>
+                  <div>{getActionBadge(selectedLog.operation)}</div>
                 </div>
                 
                 <div>

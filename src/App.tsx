@@ -84,7 +84,7 @@ const App: React.FC = () => {
                 <Route
                   path="/users"
                   element={
-                    <ProtectedRoute requiredRoles={['ADMIN']}>
+                    <ProtectedRoute requiredRoles={['ROLE_ADMIN']}>
                       <UserManagement />
                     </ProtectedRoute>
                   }
@@ -94,7 +94,7 @@ const App: React.FC = () => {
                 <Route
                   path="/audit"
                   element={
-                    <ProtectedRoute requiredRoles={['ADMIN', 'AUDITOR']}>
+                    <ProtectedRoute requiredRoles={['ROLE_ADMIN', 'ROLE_AUDITOR']}>
                       <AuditLogs />
                     </ProtectedRoute>
                   }

@@ -147,9 +147,9 @@ const UserManagement: React.FC = () => {
       <span
         key={role}
         className={`inline-block px-2 py-1 text-xs font-medium rounded-full mr-1 ${
-          role === 'ADMIN' 
+          role === 'ROLE_ADMIN' 
             ? 'bg-red-100 text-red-700'
-            : role === 'AUDITOR'
+            : role === 'ROLE_AUDITOR'
             ? 'bg-blue-100 text-blue-700'
             : 'bg-gray-100 text-gray-700'
         }`}

@@ -24,7 +24,7 @@ export interface ResetPasswordRequest {
 }
 
 export interface AuthResponse {
-  accessToken: string;
+  token: string;
   refreshToken: string;
   user: {
     id: number;
@@ -50,7 +50,7 @@ export const authAPI = {
   resetPassword: (data: ResetPasswordRequest): Promise<{ data: { message: string } }> =>
     api.post('/api/auth/reset-password', data),
 
-  refreshToken: (refreshToken: string): Promise<{ data: { accessToken: string } }> =>
+  refreshToken: (refreshToken: string): Promise<{ data: { token: string, refreshToken: string } }> =>
     api.post('/api/auth/refresh', { refreshToken }),
 
   logout: (): Promise<void> =>

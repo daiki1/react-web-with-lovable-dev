@@ -59,14 +59,14 @@ const Home: React.FC = () => {
       description: 'Manage system users and their permissions',
       icon: Users,
       href: '/users',
-      available: hasRole('ADMIN'),
+      available: hasRole('ROLE_ADMIN'),
     },
     {
       title: t('pages.audit.title'),
       description: 'View system audit logs and activities',
       icon: FileText,
       href: '/audit',
-      available: hasRole('ADMIN') || hasRole('AUDITOR'),
+      available: hasRole('ROLE_ADMIN') || hasRole('ROLE_AUDITOR'),
     },
   ];
 
@@ -173,7 +173,7 @@ const Home: React.FC = () => {
               User Management
             </h3>
             <p className="text-sm text-gray-600">
-              {hasRole('ADMIN') ? 'Full access available' : 'Contact admin for access'}
+              {hasRole('ROLE_ADMIN') ? 'Full access available' : 'Contact admin for access'}
             </p>
           </div>
 
@@ -197,7 +197,7 @@ const Home: React.FC = () => {
               Audit Logs
             </h3>
             <p className="text-sm text-gray-600">
-              {hasRole('ADMIN') || hasRole('AUDITOR') ? 'View available' : 'Contact admin for access'}
+              {hasRole('ROLE_ADMIN') || hasRole('ROLE_AUDITOR') ? 'View available' : 'Contact admin for access'}
             </p>
           </div>
         </div>

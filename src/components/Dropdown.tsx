@@ -43,8 +43,8 @@ const Dropdown: React.FC<DropdownProps> = ({
   const selectedOption = options.find(option => option.value === value);
   
   const filteredOptions = options.filter(option =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  (option.label ?? '').toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   // Close dropdown when clicking outside
   useEffect(() => {
