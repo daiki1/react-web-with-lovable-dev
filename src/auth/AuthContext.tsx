@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { authAPI, AuthResponse } from '../api/auth';
@@ -87,11 +86,31 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
  */
 const decodeUserFromToken = (token: string): User | null => {
   try {
+    // Validate token is a non-empty string
+    if (!token || typeof token !== 'string' || token.trim() === '') {
+      console.warn('Invalid token: token is empty or not a string');
+      return null;
+    }
+
+    // Check if token has the correct format (3 parts separated by dots)
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) {
+      console.warn('Invalid token format: token must have 3 parts separated by dots');
+      return null;
+    }
+
     const decoded = jwtDecode<JwtPayload>(token);
     
     // Check if token is expired
     const currentTime = Date.now() / 1000;
     if (decoded.exp < currentTime) {
+      console.warn('Token has expired');
+      return null;
+    }
+
+    // Validate required fields exist
+    if (!decoded.sub || !decoded.userId || !decoded.email || !decoded.roles) {
+      console.warn('Token is missing required fields');
       return null;
     }
 
@@ -99,7 +118,7 @@ const decodeUserFromToken = (token: string): User | null => {
       id: decoded.userId,
       username: decoded.sub,
       email: decoded.email,
-      roles: decoded.roles,
+      roles: Array.isArray(decoded.roles) ? decoded.roles : [],
     };
   } catch (error) {
     console.error('Error decoding JWT token:', error);
@@ -154,10 +173,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await authAPI.login({ username, password });
       const { accessToken, refreshToken } = response.data;
       
+      // Validate accessToken exists and is a string
+      if (!accessToken || typeof accessToken !== 'string') {
+        throw new Error('Invalid access token received from server');
+      }
+      
       // Decode user information from JWT token
       const user = decodeUserFromToken(accessToken);
       if (!user) {
-        throw new Error('Invalid token received');
+        throw new Error('Invalid token received - unable to decode user information');
       }
       
       localStorage.setItem('accessToken', accessToken);
@@ -173,7 +197,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       return true;
     } catch (error: any) {
-      const message = error.response?.data?.message || t('auth.invalidCredentials');
+      const message = error.response?.data?.message || error.message || t('auth.invalidCredentials');
       dispatch({ type: 'AUTH_ERROR', payload: message });
       toast({
         title: t('common.error'),
@@ -191,10 +215,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await authAPI.register({ username, email, password });
       const { accessToken, refreshToken } = response.data;
       
+      // Validate accessToken exists and is a string
+      if (!accessToken || typeof accessToken !== 'string') {
+        throw new Error('Invalid access token received from server');
+      }
+      
       // Decode user information from JWT token
       const user = decodeUserFromToken(accessToken);
       if (!user) {
-        throw new Error('Invalid token received');
+        throw new Error('Invalid token received - unable to decode user information');
       }
       
       localStorage.setItem('accessToken', accessToken);
@@ -210,7 +239,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       return true;
     } catch (error: any) {
-      const message = error.response?.data?.message || t('common.error');
+      const message = error.response?.data?.message || error.message || t('common.error');
       dispatch({ type: 'AUTH_ERROR', payload: message });
       toast({
         title: t('common.error'),
