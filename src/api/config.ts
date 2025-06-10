@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 /**
  * Base API configuration
@@ -57,6 +58,7 @@ api.interceptors.response.use(
         // Refresh failed, redirect to login
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
         window.location.href = '/login';
       }
     }

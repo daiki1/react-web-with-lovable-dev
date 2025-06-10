@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { authAPI, AuthResponse } from '../api/auth';
 import { useToast } from '../hooks/use-toast';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +10,17 @@ interface User {
   username: string;
   email: string;
   roles: string[];
+}
+
+interface JwtPayload {
+  sub: string; // username
+  roles: string[];
+  userId: number;
+  email: string;
+  exp: number;
+  iat: number;
+  iss: string;
+  aud: string;
 }
 
 interface AuthState {
@@ -70,6 +82,31 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   }
 };
 
+/**
+ * Decode JWT token and extract user information
+ */
+const decodeUserFromToken = (token: string): User | null => {
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    
+    // Check if token is expired
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp < currentTime) {
+      return null;
+    }
+
+    return {
+      id: decoded.userId,
+      username: decoded.sub,
+      email: decoded.email,
+      roles: decoded.roles,
+    };
+  } catch (error) {
+    console.error('Error decoding JWT token:', error);
+    return null;
+  }
+};
+
 interface AuthContextType extends AuthState {
   login: (username: string, password: string) => Promise<boolean>;
   register: (username: string, email: string, password: string) => Promise<boolean>;
@@ -96,13 +133,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Check for existing token on mount
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    const userStr = localStorage.getItem('user');
     
-    if (token && userStr) {
-      try {
-        const user = JSON.parse(userStr);
+    if (token) {
+      const user = decodeUserFromToken(token);
+      if (user) {
         dispatch({ type: 'AUTH_SUCCESS', payload: user });
-      } catch (error) {
+      } else {
+        // Token is invalid or expired, clear storage
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
@@ -115,11 +152,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       const response = await authAPI.login({ username, password });
-      const { accessToken, refreshToken, user } = response.data;
+      const { accessToken, refreshToken } = response.data;
+      
+      // Decode user information from JWT token
+      const user = decodeUserFromToken(accessToken);
+      if (!user) {
+        throw new Error('Invalid token received');
+      }
       
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('user', JSON.stringify(user));
+      // Remove the old user storage since we're getting data from token
+      localStorage.removeItem('user');
       
       dispatch({ type: 'AUTH_SUCCESS', payload: user });
       toast({
@@ -145,11 +189,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       const response = await authAPI.register({ username, email, password });
-      const { accessToken, refreshToken, user } = response.data;
+      const { accessToken, refreshToken } = response.data;
+      
+      // Decode user information from JWT token
+      const user = decodeUserFromToken(accessToken);
+      if (!user) {
+        throw new Error('Invalid token received');
+      }
       
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('user', JSON.stringify(user));
+      // Remove the old user storage since we're getting data from token
+      localStorage.removeItem('user');
       
       dispatch({ type: 'AUTH_SUCCESS', payload: user });
       toast({
