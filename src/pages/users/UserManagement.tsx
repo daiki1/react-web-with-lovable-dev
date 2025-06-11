@@ -21,7 +21,7 @@ import LoaderOverlay from '../../components/LoaderOverlay';
 import { useToast } from '../../hooks/use-toast';
 
 interface User {
-  id: number;
+  userId: number;
   username: string;
   email: string;
   roles: string[];
@@ -83,12 +83,21 @@ const UserManagement: React.FC = () => {
     }
   };
 
-  const toggleUserStatus = async (userId: number, currentStatus: boolean) => {
+  const toggleUserStatus = async (userId: number | undefined, currentStatus: boolean) => {
+    if (typeof userId !== 'number') {
+      console.error('Invalid userId:', userId);
+      toast({
+        title: t('common.error'),
+        description: 'Invalid user ID',
+        variant: 'destructive',
+      });
+      return;
+    }
     try {
       await api.patch(`/api/users/${userId}/status`, { active: !currentStatus });
       
       setUsers(prev => prev.map(user =>
-        user.id === userId ? { ...user, active: !currentStatus } : user
+        user.userId === userId ? { ...user, active: !currentStatus } : user
       ));
       
       toast({
@@ -109,7 +118,7 @@ const UserManagement: React.FC = () => {
     try {
       await api.delete(`/api/users/${userId}`);
       
-      setUsers(prev => prev.filter(user => user.id !== userId));
+      setUsers(prev => prev.filter(user => user.userId !== userId));
       setShowDeleteDialog(false);
       setSelectedUser(null);
       
@@ -237,7 +246,7 @@ const UserManagement: React.FC = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 transition-colors duration-150">
+                  <tr key={user.userId} className="hover:bg-gray-50 transition-colors duration-150">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
                         <div className="text-sm font-medium text-gray-900">
@@ -266,8 +275,12 @@ const UserManagement: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => toggleUserStatus(user.id, user.active)}
-                          className="text-orange-600 hover:text-orange-700 transition-colors duration-200"
+                          onClick={() => toggleUserStatus(user.userId, user.active)}
+                          className={`transition-colors duration-200 ${
+                            user.active
+                              ? 'text-orange-600 hover:text-orange-700'
+                              : 'text-gray-400 hover:text-gray-500'
+                          }`}
                           title={user.active ? 'Deactivate user' : 'Activate user'}
                         >
                           {user.active ? (
@@ -284,13 +297,13 @@ const UserManagement: React.FC = () => {
                           <Edit className="h-4 w-4" />
                         </button>
                         
-                        <button
+                        {/*<button
                           onClick={() => handleDeleteClick(user)}
                           className="text-red-600 hover:text-red-700 transition-colors duration-200"
                           title="Delete user"
-                        >
+                         >
                           <Trash2 className="h-4 w-4" />
-                        </button>
+                        </button>*/}
                       </div>
                     </td>
                   </tr>
@@ -344,7 +357,7 @@ const UserManagement: React.FC = () => {
               </CustomButton>
               <CustomButton
                 variant="destructive"
-                onClick={() => selectedUser && deleteUser(selectedUser.id)}
+                onClick={() => selectedUser && deleteUser(selectedUser.userId)}
               >
                 {t('common.delete')}
               </CustomButton>

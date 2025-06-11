@@ -24,6 +24,7 @@ interface AuditLog {
   id: number;
   timestamp: string;
   userId: number;
+  username: string;
   operation: string;  
   resource: string;  
   details: string;
@@ -62,7 +63,8 @@ const AuditLogs: React.FC = () => {
       (log.userId && log.userId.toString().toLowerCase().includes(searchTerm.toLowerCase())) ||
       (log.operation && log.operation.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (log.resource && log.resource.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (log.details && log.details.toLowerCase().includes(searchTerm.toLowerCase()))
+      (log.details && log.details.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (log.username && log.username.toLowerCase().includes(searchTerm.toLowerCase())) 
     );
 
     if (actionFilter) {
@@ -229,7 +231,7 @@ const AuditLogs: React.FC = () => {
                       <div className="flex items-center">
                         <User className="h-4 w-4 text-gray-400 mr-2" />
                         <span className="text-sm font-medium text-gray-900">
-                          {log.userId}
+                          {log.userId} - {log.username}
                         </span>
                       </div>
                     </td>
@@ -317,7 +319,7 @@ const AuditLogs: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('pages.audit.user')}
                   </label>
-                  <p className="text-sm text-gray-900">{selectedLog.userId}</p>
+                  <p className="text-sm text-gray-900">{selectedLog.userId} - {selectedLog.username}</p>
                 </div>
                 
                 <div>

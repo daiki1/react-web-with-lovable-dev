@@ -163,42 +163,40 @@ const Home: React.FC = () => {
           ))}
         </div>
 
-        {/* Stats or Additional Info */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Users className="h-8 w-8 text-orange-600" />
+        {/* Stats or Additional Info */}        
+        <div className="mt-8 space-y-3">
+          <div className="flex items-center gap-4 bg-white rounded-lg shadow p-2">
+            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+              <Users className="h-5 w-5 text-orange-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              User Management
-            </h3>
-            <p className="text-sm text-gray-600">
-              {hasRole('ROLE_ADMIN') ? 'Full access available' : 'Contact admin for access'}
-            </p>
+            <div>
+              <h4 className="text-sm font-medium text-gray-800">User Management</h4>
+              <p className="text-xs text-gray-500">
+                {hasRole('ROLE_ADMIN') ? 'Full access available' : 'Contact admin for access'}
+              </p>
+            </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Globe className="h-8 w-8 text-orange-600" />
+          <div className="flex items-center gap-4 bg-white rounded-lg shadow p-2">
+            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+              <Globe className="h-5 w-5 text-orange-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Multi-language
-            </h3>
-            <p className="text-sm text-gray-600">
-              Available in English and Spanish
-            </p>
+            <div>
+              <h4 className="text-sm font-medium text-gray-800">Multi-language</h4>
+              <p className="text-xs text-gray-500">Available in English and Spanish</p>
+            </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FileText className="h-8 w-8 text-orange-600" />
+          <div className="flex items-center gap-4 bg-white rounded-lg shadow p-2">
+            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+              <FileText className="h-5 w-5 text-orange-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Audit Logs
-            </h3>
-            <p className="text-sm text-gray-600">
-              {hasRole('ROLE_ADMIN') || hasRole('ROLE_AUDITOR') ? 'View available' : 'Contact admin for access'}
-            </p>
+            <div>
+              <h4 className="text-sm font-medium text-gray-800">Audit Logs</h4>
+              <p className="text-xs text-gray-500">
+                {hasRole('ROLE_ADMIN') || hasRole('ROLE_AUDITOR') ? 'View available' : 'Contact admin for access'}
+              </p>
+            </div>
           </div>
         </div>
       </main>
