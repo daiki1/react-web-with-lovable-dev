@@ -8,6 +8,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
+import AuthGuard from './components/AuthGuard';
 
 // Auth Pages
 import Login from './pages/login/Login';
@@ -46,11 +47,39 @@ const App: React.FC = () => {
           <AuthProvider>
             <div className="min-h-screen bg-background">
               <Routes>
-                {/* Public Routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
+                {/* Public Routes with Auth Guard */}
+                <Route
+                  path="/login"
+                  element={
+                    <AuthGuard>
+                      <Login />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <AuthGuard>
+                      <Register />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/forgot-password"
+                  element={
+                    <AuthGuard>
+                      <ForgotPassword />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/reset-password"
+                  element={
+                    <AuthGuard>
+                      <ResetPassword />
+                    </AuthGuard>
+                  }
+                />
 
                 {/* Protected Routes */}
                 <Route
