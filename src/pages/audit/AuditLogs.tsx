@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -126,6 +125,115 @@ const AuditLogs: React.FC = () => {
       }`}>
         {action}
       </span>
+    );
+  };
+
+  const parseDetailsWithJson = (details: string) => {
+    try {
+      // Split by common patterns like "from {" and "to {"
+      const parts = details.split(/(\s+from\s+|\s+to\s+)/i);
+      const result = [];
+      
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i].trim();
+        
+        if (part.match(/^\s*(from|to)\s*$/i)) {
+          // This is a connector word
+          result.push({
+            type: 'text',
+            content: part.toLowerCase()
+          });
+        } else if (part.startsWith('{') && part.endsWith('}')) {
+          // This looks like JSON
+          try {
+            const jsonData = JSON.parse(part);
+            result.push({
+              type: 'json',
+              content: jsonData
+            });
+          } catch {
+            // If JSON parsing fails, treat as text
+            result.push({
+              type: 'text',
+              content: part
+            });
+          }
+        } else {
+          // Regular text
+          result.push({
+            type: 'text',
+            content: part
+          });
+        }
+      }
+      
+      return result;
+    } catch (error) {
+      // If parsing fails, return original text
+      return [{
+        type: 'text',
+        content: details
+      }];
+    }
+  };
+
+  const renderJsonAsTable = (jsonData: any) => {
+    if (typeof jsonData !== 'object' || jsonData === null) {
+      return <span className="text-sm text-gray-900">{String(jsonData)}</span>;
+    }
+
+    return (
+      <div className="bg-gray-50 rounded-lg p-3 border">
+        <table className="w-full text-sm">
+          <tbody>
+            {Object.entries(jsonData).map(([key, value]) => (
+              <tr key={key} className="border-b border-gray-200 last:border-b-0">
+                <td className="py-1 pr-3 font-medium text-gray-700 capitalize">
+                  {key.replace(/([A-Z])/g, ' $1').trim()}:
+                </td>
+                <td className="py-1 text-gray-900">
+                  {typeof value === 'object' && value !== null ? (
+                    Array.isArray(value) ? (
+                      <div className="space-y-1">
+                        {value.map((item, index) => (
+                          <div key={index} className="text-xs bg-white rounded p-1 border">
+                            {typeof item === 'object' ? (
+                              <div className="space-y-1">
+                                {Object.entries(item).map(([subKey, subValue]) => (
+                                  <div key={subKey}>
+                                    <span className="font-medium">{subKey}:</span> {String(subValue)}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              String(item)
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-xs bg-white rounded p-1 border">
+                        {Object.entries(value).map(([subKey, subValue]) => (
+                          <div key={subKey}>
+                            <span className="font-medium">{subKey}:</span> {String(subValue)}
+                          </div>
+                        ))}
+                      </div>
+                    )
+                  ) : (
+                    <span className={typeof value === 'boolean' ? 
+                      (value ? 'text-green-600' : 'text-red-600') : 
+                      'text-gray-900'
+                    }>
+                      {String(value)}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
@@ -296,7 +404,7 @@ const AuditLogs: React.FC = () => {
           )}
         </div>
 
-        {/* Log Details Dialog */}
+        {/* Log Details Dialog with Enhanced JSON Formatting */}
         <PopupDialog
           isOpen={showDetailsDialog}
           onClose={() => setShowDetailsDialog(false)}
@@ -345,13 +453,26 @@ const AuditLogs: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   {t('pages.audit.details')}
                 </label>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <pre className="text-sm text-gray-900 whitespace-pre-wrap">
-                    {selectedLog.details}
-                  </pre>
+                <div className="space-y-3">
+                  {parseDetailsWithJson(selectedLog.details).map((part, index) => (
+                    <div key={index}>
+                      {part.type === 'text' ? (
+                        <div className="text-sm text-gray-900 font-medium capitalize">
+                          {part.content}
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="text-xs text-gray-600 uppercase tracking-wide font-medium mb-1">
+                            {index === 1 ? 'Original Data' : index === 3 ? 'Updated Data' : 'Data'}
+                          </div>
+                          {renderJsonAsTable(part.content)}
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
               
