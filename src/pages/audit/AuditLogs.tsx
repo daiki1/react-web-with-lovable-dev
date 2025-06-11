@@ -130,41 +130,67 @@ const AuditLogs: React.FC = () => {
 
   const parseDetailsWithJson = (details: string) => {
     try {
-      // Split by common patterns like "from {" and "to {"
-      const parts = details.split(/(\s+from\s+|\s+to\s+)/i);
       const result = [];
+      let currentIndex = 0;
       
-      for (let i = 0; i < parts.length; i++) {
-        const part = parts[i].trim();
+      // Find all JSON objects by looking for { and matching }
+      while (currentIndex < details.length) {
+        const openBrace = details.indexOf('{', currentIndex);
         
-        if (part.match(/^\s*(from|to)\s*$/i)) {
-          // This is a connector word
-          result.push({
-            type: 'text',
-            content: part.toLowerCase()
-          });
-        } else if (part.startsWith('{') && part.endsWith('}')) {
-          // This looks like JSON
-          try {
-            const jsonData = JSON.parse(part);
-            result.push({
-              type: 'json',
-              content: jsonData
-            });
-          } catch {
-            // If JSON parsing fails, treat as text
+        if (openBrace === -1) {
+          // No more JSON objects, add remaining text
+          const remainingText = details.slice(currentIndex).trim();
+          if (remainingText) {
             result.push({
               type: 'text',
-              content: part
+              content: remainingText
             });
           }
-        } else {
-          // Regular text
+          break;
+        }
+        
+        // Add text before the JSON object
+        const textBefore = details.slice(currentIndex, openBrace).trim();
+        if (textBefore) {
           result.push({
             type: 'text',
-            content: part
+            content: textBefore
           });
         }
+        
+        // Find the matching closing brace
+        let braceCount = 0;
+        let jsonEnd = openBrace;
+        
+        for (let i = openBrace; i < details.length; i++) {
+          if (details[i] === '{') {
+            braceCount++;
+          } else if (details[i] === '}') {
+            braceCount--;
+            if (braceCount === 0) {
+              jsonEnd = i + 1;
+              break;
+            }
+          }
+        }
+        
+        // Extract and parse the JSON
+        const jsonString = details.slice(openBrace, jsonEnd);
+        try {
+          const jsonData = JSON.parse(jsonString);
+          result.push({
+            type: 'json',
+            content: jsonData
+          });
+        } catch {
+          // If JSON parsing fails, treat as text
+          result.push({
+            type: 'text',
+            content: jsonString
+          });
+        }
+        
+        currentIndex = jsonEnd;
       }
       
       return result;
@@ -497,3 +523,5 @@ const AuditLogs: React.FC = () => {
 };
 
 export default AuditLogs;
+
+}
