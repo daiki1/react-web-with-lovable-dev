@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +16,7 @@ import api from '../../api/config';
 import CustomButton from '../../components/CustomButton';
 import InputField from '../../components/InputField';
 import PopupDialog from '../../components/PopupDialog';
+import UserEditForm from '../../components/UserEditForm';
 import LoaderOverlay from '../../components/LoaderOverlay';
 import { useToast } from '../../hooks/use-toast';
 
@@ -43,6 +43,7 @@ const UserManagement: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   
   // Pagination
@@ -139,6 +140,17 @@ const UserManagement: React.FC = () => {
   const handleDeleteClick = (user: User) => {
     setSelectedUser(user);
     setShowDeleteDialog(true);
+  };
+
+  const handleEditClick = (user: User) => {
+    setSelectedUser(user);
+    setShowEditDialog(true);
+  };
+
+  const handleUserUpdated = (updatedUser: User) => {
+    setUsers(prev => prev.map(user =>
+      user.userId === updatedUser.userId ? updatedUser : user
+    ));
   };
 
   const formatDate = (dateString: string) => {
@@ -291,6 +303,7 @@ const UserManagement: React.FC = () => {
                         </button>
                         
                         <button
+                          onClick={() => handleEditClick(user)}
                           className="text-blue-600 hover:text-blue-700 transition-colors duration-200"
                           title="Edit user"
                         >
@@ -341,6 +354,22 @@ const UserManagement: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Edit User Dialog */}
+        <PopupDialog
+          isOpen={showEditDialog}
+          onClose={() => setShowEditDialog(false)}
+          size="md"
+          showCloseButton={false}
+        >
+          {selectedUser && (
+            <UserEditForm
+              user={selectedUser}
+              onClose={() => setShowEditDialog(false)}
+              onUserUpdated={handleUserUpdated}
+            />
+          )}
+        </PopupDialog>
 
         {/* Delete Confirmation Dialog */}
         <PopupDialog
