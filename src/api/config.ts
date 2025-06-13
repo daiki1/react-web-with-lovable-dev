@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import i18n from '../i18n';
 
 /**
  * Base API configuration
@@ -17,13 +18,18 @@ const api = axios.create({
   },
 });
 
-// Request interceptor to add auth token
+// Request interceptor to add auth token and language header
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Add Accept-Language header based on current i18n language
+    const currentLanguage = i18n.language || 'en';
+    config.headers['Accept-Language'] = currentLanguage;
+    
     return config;
   },
   (error) => {
