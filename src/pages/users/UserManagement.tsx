@@ -9,7 +9,8 @@ import {
   Trash2, 
   ToggleLeft, 
   ToggleRight,
-  Users 
+  Users,
+  UserCheck
 } from 'lucide-react';
 
 import api from '../../api/config';
@@ -17,6 +18,7 @@ import CustomButton from '../../components/CustomButton';
 import InputField from '../../components/InputField';
 import PopupDialog from '../../components/PopupDialog';
 import UserEditForm from '../../components/UserEditForm';
+import UserRoleForm from '../../components/UserRoleForm';
 import LoaderOverlay from '../../components/LoaderOverlay';
 import { useToast } from '../../hooks/use-toast';
 
@@ -45,6 +47,7 @@ const UserManagement: React.FC = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [showRoleDialog, setShowRoleDialog] = useState(false);
   
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
@@ -145,6 +148,11 @@ const UserManagement: React.FC = () => {
   const handleEditClick = (user: User) => {
     setSelectedUser(user);
     setShowEditDialog(true);
+  };
+
+  const handleRoleClick = (user: User) => {
+    setSelectedUser(user);
+    setShowRoleDialog(true);
   };
 
   const handleUserUpdated = (updatedUser: User) => {
@@ -310,6 +318,14 @@ const UserManagement: React.FC = () => {
                           <Edit className="h-4 w-4" />
                         </button>
                         
+                        <button
+                          onClick={() => handleRoleClick(user)}
+                          className="text-purple-600 hover:text-purple-700 transition-colors duration-200"
+                          title="Change roles"
+                        >
+                          <UserCheck className="h-4 w-4" />
+                        </button>
+                        
                         {/*<button
                           onClick={() => handleDeleteClick(user)}
                           className="text-red-600 hover:text-red-700 transition-colors duration-200"
@@ -367,6 +383,22 @@ const UserManagement: React.FC = () => {
               user={selectedUser}
               onClose={() => setShowEditDialog(false)}
               onUserUpdated={handleUserUpdated}
+            />
+          )}
+        </PopupDialog>
+
+        {/* Role Management Dialog */}
+        <PopupDialog
+          isOpen={showRoleDialog}
+          onClose={() => setShowRoleDialog(false)}
+          size="md"
+          showCloseButton={false}
+        >
+          {selectedUser && (
+            <UserRoleForm
+              user={selectedUser}
+              onClose={() => setShowRoleDialog(false)}
+              onRolesUpdated={handleUserUpdated}
             />
           )}
         </PopupDialog>
