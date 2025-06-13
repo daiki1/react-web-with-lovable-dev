@@ -1,5 +1,9 @@
 
 {
+  "back":{
+    "toHome": "Back to Home",
+    "toLogin": "Back to Login"
+  },
   "common": {
     "loading": "Loading...",
     "error": "Error",
@@ -26,6 +30,7 @@
     "forgotPassword": "Forgot Password",
     "resetPassword": "Reset Password",
     "username": "Username",
+    "usernameOrEmail": "Username or Email",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -43,7 +48,23 @@
     "newPassword": "New Password",
     "repeatPassword": "Repeat Password",
     "requestCode": "Request Code",
-    "enterResetCode": "Enter the 5-digit code sent to your email"
+    "enterResetCode": "Enter the 5-digit code sent to your email",
+    "invalidAccessToken": "Invalid access token received from server.",
+    "invalidTokenDecode": "Invalid token received - unable to decode user information.",
+    "useAuthOutsideProvider": "useAuth must be used within an AuthProvider.",
+    "checkingAuth": "Checking authentication...",
+    "forgotPasswordInstructions": "Enter your email to receive a password reset code.",
+    "welcomeBack": "Welcome back! Please sign in to your account.",
+    "createAccount": "Create your account to get started.",
+    "sendTo": "Send to",
+    "enterValidCode": "Please enter a valid 5-digit code",
+    "didNotReceiveCode": "Didn't receive the code? Request a new one"    
+  },
+  "ui": {
+    "selectPlaceholder": "Select an option",
+    "noOptions": "No options found",
+    "search": "Search...",
+    "enterUsername": "Enter username"
   },
   "validation": {
     "required": "This field is required",
@@ -60,13 +81,92 @@
     "localization": "Localization",
     "changeLanguage": "Change Language"
   },
+  "userForm": {
+    "errors": {
+      "usernameRequired": "Username is required",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Please enter a valid email address"
+    },
+    "success": {
+      "update": "User updated successfully"
+    },
+    "failure": {
+      "update": "Failed to update user"
+    },
+    "placeholder": {
+      "email": "Enter email address"
+    },
+    "buttons": {
+      "save": "Save Changes",
+      "saving": "Saving..."
+    }
+  },
+   "userRoles": {
+    "errors": {
+      "loadFailed": "Failed to load roles",
+      "updateFailed": "Failed to update user roles",
+      "atLeastOne": "User must have at least one role"
+    },
+    "success": {
+      "update": "User roles updated successfully"
+    },
+    "loading": "Loading roles...",
+    "title": "Change User Roles",
+    "selectLabel": "Select Roles (at least one required)",
+    "buttons": {
+      "save": "Save Changes",
+      "saving": "Saving..."
+    }
+  },
+  "auditLogs": {
+    "error": {
+      "loadFailed": "Failed to load audit logs"
+    },
+    "filters": {
+      "allActions": "All Actions",
+      "searchPlaceholder": "Search logs by user, action, resource, or details...",
+      "actionPlaceholder": "Filter by action"
+    },
+    "table": {
+      "actions": "Actions"
+    },
+    "messages": {
+      "auditLogsDetail": "Audit Logs Detail",
+      "noLogs": "No audit logs found",
+      "description": "Monitor system activities and user actions",
+      "logsFound": "{{count}} logs found"
+    },
+    "pagination": {
+      "pageInfo": "Page {{current}} of {{total}}"
+    },
+    "labels": {
+      "userAgent": "User Agent",
+      "original": "Original Data",
+      "updated": "Updated Data",
+      "generic": "Data"
+    }
+  },
   "pages": {
     "home": {
       "welcome": "Welcome to the Admin Portal",
-      "description": "Manage your application with ease"
+      "description": "Manage your application with ease",
+      "adminPortal": "Admin Portal",
+      "userManagement": "User Management",
+      "multiLanguage": "Multi-language",
+      "multiLanguageDesc": "Available in English and Spanish",
+      "auditLogs": "Audit Logs",
+      "auditAccess": {
+        "granted": "View available",
+        "denied": "Contact admin for access"
+      },
+      "userAccess": {
+        "granted": "Full access available",
+        "denied": "Contact admin for access"
+      }
     },
     "users": {
       "title": "User Management",
+      "description": "Manage system users and their permissions",
       "addUser": "Add User",
       "editUser": "Edit User",
       "deleteUser": "Delete User",
@@ -81,10 +181,24 @@
       "actions": "Actions",
       "userDeleted": "User deleted successfully",
       "userUpdated": "User updated successfully",
-      "confirmDelete": "Are you sure you want to delete this user?"
-    },
+      "confirmDelete": "Are you sure you want to delete this user?",
+      "loadError": "Failed to load users",
+      "invalidId": "Invalid user ID",
+      "statusUpdated": "User {{status}} successfully",
+      "statusUpdateError": "Failed to update user status",
+      "deleteError": "Failed to delete user",
+      "usersFound": "{{count}} users found",
+      "userColumn": "User",
+      "editTitle": "Edit user",
+      "roleTitle": "Change roles",
+      "pagination": "Page {{current}} of {{total}}",
+      "searchPlaceholder": "Search users by username or email...",
+      "deactivateTitle": "Deactivate user",
+      "activateTitle": "Activate user"
+    },     
     "audit": {
       "title": "Audit Logs",
+      "description": "View system audit logs and activities",
       "timestamp": "Timestamp",
       "user": "User",
       "action": "Action",
@@ -100,7 +214,11 @@
       "testAdmin": "Test Admin API",
       "testAuditor": "Test Auditor API",
       "response": "Response",
-      "testing": "Testing..."
+      "testing": "Testing...",
+      "publicAccess": "Public access - Available to all users",
+      "userAccess": "User access - Requires authentication",
+      "adminAccess": "Admin access - Requires ADMIN role",
+      "auditorAccess": "Auditor access - Requires AUDITOR role"
     },
     "localization": {
       "title": "Localization",
@@ -108,11 +226,21 @@
       "country": "Country",
       "state": "State",
       "city": "City",
+      "countries": "Countries",
+      "states": "States",
+      "cities" : "Cities",
+      "citiesLoaded": "Cities Loaded",
       "selectCountry": "Select a country",
       "selectState": "Select a state",
       "selectCity": "Select a city",
       "loadMoreCities": "Load More Cities",
-      "noMoreCities": "No more cities available"
+      "noMoreCities": "No more cities available",
+      "errors": {
+        "countries": "Failed to load countries",
+        "states": "Failed to load states",
+        "cities": "Failed to load cities"
+      },
+      "currentSelection": "Current Selection"
     }
   },
   "roles": {

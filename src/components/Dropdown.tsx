@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useTranslation } from 'react-i18next';
 
 export interface DropdownOption {
   value: string;
@@ -28,7 +29,7 @@ export interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = ({
   options,
   value,
-  placeholder = 'Select an option',
+  placeholder,
   onSelect,
   disabled = false,
   className,
@@ -39,7 +40,9 @@ const Dropdown: React.FC<DropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const { t } = useTranslation();
+  
+  const finalPlaceholder = placeholder ?? t('ui.selectPlaceholder');
   const selectedOption = options.find(option => option.value === value);
   
   const filteredOptions = options.filter(option =>
@@ -93,7 +96,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               'block truncate',
               !selectedOption && 'text-gray-500'
             )}>
-              {selectedOption ? selectedOption.label : placeholder}
+              {selectedOption ? selectedOption.label : finalPlaceholder}
             </span>
           </div>
           <ChevronDown 
@@ -110,7 +113,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               <input
                 type="text"
                 className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-500"
-                placeholder="Search..."
+                placeholder={t('ui.search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -139,7 +142,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 ))
               ) : (
                 <div className="px-3 py-2 text-gray-500 text-sm">
-                  No options found
+                  {t('ui.noOptions')}
                 </div>
               )}
             </div>

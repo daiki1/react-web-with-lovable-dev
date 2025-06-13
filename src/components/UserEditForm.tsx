@@ -38,13 +38,13 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ user, onClose, onUserUpdate
     const newErrors: { username?: string; email?: string } = {};
     
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = t('userForm.errors.usernameRequired');
     }
     
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('userForm.errors.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('userForm.errors.invalidEmail');
     }
     
     setErrors(newErrors);
@@ -70,7 +70,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ user, onClose, onUserUpdate
       
       toast({
         title: t('common.success'),
-        description: 'User updated successfully',
+        description: t('userForm.success.update'),
         variant: 'default',
       });
       
@@ -78,7 +78,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ user, onClose, onUserUpdate
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to update user',
+        description: error.response?.data?.message || t('userForm.failure.update'),
         variant: 'destructive',
       });
     } finally {
@@ -115,7 +115,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ user, onClose, onUserUpdate
           value={formData.username}
           onChange={handleChange}
           error={errors.username}
-          placeholder="Enter username"
+          placeholder={t('ui.enterUsername')}
           disabled={isLoading}
         />
 
@@ -126,7 +126,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ user, onClose, onUserUpdate
           value={formData.email}
           onChange={handleChange}
           error={errors.email}
-          placeholder="Enter email address"
+          placeholder={t('userForm.placeholder.email')}
           disabled={isLoading}
         />
 
@@ -146,7 +146,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ user, onClose, onUserUpdate
             disabled={isLoading}
             icon={<Save className="h-4 w-4" />}
           >
-            {isLoading ? 'Saving...' : 'Save Changes'}
+            {isLoading ? t('userForm.buttons.saving') : t('userForm.buttons.save')}
           </CustomButton>
         </div>
       </form>

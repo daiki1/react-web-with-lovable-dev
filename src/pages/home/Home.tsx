@@ -56,14 +56,14 @@ const Home: React.FC = () => {
     },
     {
       title: t('pages.users.title'),
-      description: 'Manage system users and their permissions',
+      description: t('pages.users.description'),
       icon: Users,
       href: '/users',
       available: hasRole('ROLE_ADMIN'),
     },
     {
       title: t('pages.audit.title'),
-      description: 'View system audit logs and activities',
+      description: t('pages.audit.description'),
       icon: FileText,
       href: '/audit',
       available: hasRole('ROLE_ADMIN') || hasRole('ROLE_AUDITOR'),
@@ -83,7 +83,7 @@ const Home: React.FC = () => {
                 <span className="text-white font-bold text-xl">A</span>
               </div>
               <h1 className="ml-3 text-xl font-semibold text-gray-900">
-                Admin Portal
+                {t('pages.home.adminPortal')}
               </h1>
             </div>
 
@@ -105,7 +105,8 @@ const Home: React.FC = () => {
                     {user?.username}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {user?.roles.join(', ')}
+                    {user?.roles.map(role => role.replace('ROLE_', '')).join(', ')}
+
                   </p>
                 </div>
                 
@@ -170,9 +171,11 @@ const Home: React.FC = () => {
               <Users className="h-5 w-5 text-orange-600" />
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-800">User Management</h4>
+              <h4 className="text-sm font-medium text-gray-800">{t('pages.home.userManagement')}</h4>
               <p className="text-xs text-gray-500">
-                {hasRole('ROLE_ADMIN') ? 'Full access available' : 'Contact admin for access'}
+                {hasRole('ROLE_ADMIN')
+                  ? t('pages.home.userAccess.granted')
+                  : t('pages.home.userAccess.denied')}
               </p>
             </div>
           </div>
@@ -182,8 +185,8 @@ const Home: React.FC = () => {
               <Globe className="h-5 w-5 text-orange-600" />
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-800">Multi-language</h4>
-              <p className="text-xs text-gray-500">Available in English and Spanish</p>
+              <h4 className="text-sm font-medium text-gray-800">{t('pages.home.multiLanguage')}</h4>
+              <p className="text-xs text-gray-500">{t('pages.home.multiLanguageDesc')}</p>
             </div>
           </div>
 
@@ -192,9 +195,11 @@ const Home: React.FC = () => {
               <FileText className="h-5 w-5 text-orange-600" />
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-800">Audit Logs</h4>
+              <h4 className="text-sm font-medium text-gray-800">{t('pages.home.auditLogs')}</h4>
               <p className="text-xs text-gray-500">
-                {hasRole('ROLE_ADMIN') || hasRole('ROLE_AUDITOR') ? 'View available' : 'Contact admin for access'}
+                {hasRole('ROLE_ADMIN') || hasRole('ROLE_AUDITOR')
+                  ? t('pages.home.auditAccess.granted')
+                  : t('pages.home.auditAccess.denied')}
               </p>
             </div>
           </div>

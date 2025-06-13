@@ -176,13 +176,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       // Validate token exists and is a string
       if (!token || typeof token !== 'string') {
-        throw new Error('Invalid access token received from server');
+        throw new Error(t('auth.invalidAccessToken'));
       }
       
       // Decode user information from JWT token
       const user = decodeUserFromToken(token);
       if (!user) {
-        throw new Error('Invalid token received - unable to decode user information');
+        throw new Error(t('auth.invalidTokenDecode'));
       }
       
       localStorage.setItem('token', token);
@@ -218,13 +218,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       // Validate token exists and is a string
       if (!token || typeof token !== 'string') {
-        throw new Error('Invalid access token received from server');
+        throw new Error(t('auth.invalidAccessToken'));
       }
       
       // Decode user information from JWT token
       const user = decodeUserFromToken(token);
       if (!user) {
-        throw new Error('Invalid token received - unable to decode user information');
+        throw new Error(t('auth.invalidTokenDecode'));
       }
       
       localStorage.setItem('token', token);
@@ -286,9 +286,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
  * Hook to use authentication context
  */
 export const useAuth = (): AuthContextType => {
+  const { t } = useTranslation();
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error(t('auth.useAuthOutsideProvider'));
   }
   return context;
 };

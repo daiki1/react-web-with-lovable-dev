@@ -48,7 +48,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to load roles',
+        description: error.response?.data?.message || t('userRoles.errors.loadFailed'),
         variant: 'destructive',
       });
     } finally {
@@ -63,7 +63,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
         if (prev.length === 1) {
           toast({
             title: t('common.error'),
-            description: 'User must have at least one role',
+            description: t('userRoles.errors.atLeastOne'),
             variant: 'destructive',
           });
           return prev;
@@ -81,7 +81,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
     if (selectedRoles.length === 0) {
       toast({
         title: t('common.error'),
-        description: 'User must have at least one role',
+        description: t('userRoles.errors.atLeastOne'),
         variant: 'destructive',
       });
       return;
@@ -98,7 +98,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
       
       toast({
         title: t('common.success'),
-        description: 'User roles updated successfully',
+        description: t('userRoles.success.update'),
         variant: 'default',
       });
       
@@ -106,7 +106,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to update user roles',
+        description: error.response?.data?.message || t('userRoles.errors.updateFailed'),
         variant: 'destructive',
       });
     } finally {
@@ -119,7 +119,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading roles...</p>
+          <p className="text-gray-600">{t('userRoles.loading')}</p>
         </div>
       </div>
     );
@@ -128,7 +128,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">Change User Roles</h3>
+        <h3 className="text-lg font-semibold text-gray-900">{t('userRoles.title')}</h3>
         <button
           onClick={onClose}
           className="p-1 rounded-lg hover:bg-gray-100 transition-colors duration-200"
@@ -150,7 +150,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Select Roles (at least one required)
+            {t('userRoles.selectLabel')}
           </label>
           <div className="space-y-3">
             {availableRoles.map((role) => (
@@ -191,7 +191,7 @@ const UserRoleForm: React.FC<UserRoleFormProps> = ({ user, onClose, onRolesUpdat
             disabled={isLoading || selectedRoles.length === 0}
             icon={<Save className="h-4 w-4" />}
           >
-            {isLoading ? 'Saving...' : 'Save Changes'}
+            {isLoading ? t('userRoles.buttons.saving') : t('userRoles.buttons.save')}
           </CustomButton>
         </div>
       </form>

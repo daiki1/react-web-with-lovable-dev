@@ -86,7 +86,7 @@ const AuditLogs: React.FC = () => {
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to load audit logs',
+        description: error.response?.data?.message || t('auditLogs.error.loadFailed'),
         variant: 'destructive',
       });
     } finally {
@@ -130,144 +130,123 @@ const AuditLogs: React.FC = () => {
   };
 
   const parseDetailsWithJson = (details: string) => {
-    try {
-      const result = [];
-      let currentIndex = 0;
-      
-      // Find all JSON objects by looking for { and matching }
-      while (currentIndex < details.length) {
-        const openBrace = details.indexOf('{', currentIndex);
-        
-        if (openBrace === -1) {
-          // No more JSON objects, add remaining text
-          const remainingText = details.slice(currentIndex).trim();
-          if (remainingText) {
-            result.push({
-              type: 'text',
-              content: remainingText
-            });
-          }
-          break;
-        }
-        
-        // Add text before the JSON object
-        const textBefore = details.slice(currentIndex, openBrace).trim();
-        if (textBefore) {
-          result.push({
-            type: 'text',
-            content: textBefore
-          });
-        }
-        
-        // Find the matching closing brace
-        let braceCount = 0;
-        let jsonEnd = openBrace;
-        
-        for (let i = openBrace; i < details.length; i++) {
-          if (details[i] === '{') {
-            braceCount++;
-          } else if (details[i] === '}') {
-            braceCount--;
-            if (braceCount === 0) {
-              jsonEnd = i + 1;
-              break;
-            }
-          }
-        }
-        
-        // Extract and parse the JSON
-        const jsonString = details.slice(openBrace, jsonEnd);
-        try {
-          const jsonData = JSON.parse(jsonString);
-          result.push({
-            type: 'json',
-            content: jsonData
-          });
-        } catch {
-          // If JSON parsing fails, treat as text
-          result.push({
-            type: 'text',
-            content: jsonString
-          });
-        }
-        
-        currentIndex = jsonEnd;
+    const result = [];
+    let currentIndex = 0;
+
+    while (currentIndex < details.length) {
+      const nextOpenBrace = details.indexOf('{', currentIndex);
+      const nextOpenBracket = details.indexOf('[', currentIndex);
+
+      let openIndex = -1;
+      let isArray = false;
+
+      // Determine which comes first: { or [
+      if (
+        nextOpenBrace === -1 &&
+        nextOpenBracket === -1
+      ) {
+        openIndex = -1;
+      } else if (
+        nextOpenBrace === -1 ||
+        (nextOpenBracket !== -1 && nextOpenBracket < nextOpenBrace)
+      ) {
+        openIndex = nextOpenBracket;
+        isArray = true;
+      } else {
+        openIndex = nextOpenBrace;
+        isArray = false;
       }
-      
-      return result;
-    } catch (error) {
-      // If parsing fails, return original text
-      return [{
-        type: 'text',
-        content: details
-      }];
+
+      // No more JSON-like content
+      if (openIndex === -1) {
+        const remainingText = details.slice(currentIndex).trim();
+        if (remainingText) {
+          result.push({ type: 'text', content: remainingText });
+        }
+        break;
+      }
+
+      // Add text before JSON
+      const textBefore = details.slice(currentIndex, openIndex).trim();
+      if (textBefore) {
+        result.push({ type: 'text', content: textBefore });
+      }
+
+      // Find matching closing brace/bracket
+      let closeIndex = openIndex;
+      let stack = [];
+      const openChar = isArray ? '[' : '{';
+      const closeChar = isArray ? ']' : '}';
+
+      for (let i = openIndex; i < details.length; i++) {
+        if (details[i] === openChar) {
+          stack.push(openChar);
+        } else if (details[i] === closeChar) {
+          stack.pop();
+          if (stack.length === 0) {
+            closeIndex = i + 1;
+            break;
+          }
+        }
+      }
+
+      const jsonString = details.slice(openIndex, closeIndex);
+      try {
+        const parsed = JSON.parse(jsonString);
+        result.push({ type: 'json', content: parsed });
+      } catch (e) {
+        // Fallback to text
+        result.push({ type: 'text', content: jsonString });
+      }
+
+      currentIndex = closeIndex;
     }
+
+    return result;
   };
 
-  const renderJsonAsTable = (jsonData: any) => {
-    if (typeof jsonData !== 'object' || jsonData === null) {
-      return <span className="text-sm text-gray-900">{String(jsonData)}</span>;
-    }
-
+  const renderJsonAsTable = (data: any) => {
+  if (Array.isArray(data)) {
     return (
-      <div className="bg-gray-50 rounded-lg p-3 border">
-        <table className="w-full text-sm">
-          <tbody>
-            {Object.entries(jsonData).map(([key, value]) => (
-              <tr key={key} className="border-b border-gray-200 last:border-b-0">
-                <td className="py-1 pr-3 font-medium text-gray-700 capitalize">
-                  {key.replace(/([A-Z])/g, ' $1').trim()}:
-                </td>
-                <td className="py-1 text-gray-900">
-                  {typeof value === 'object' && value !== null ? (
-                    Array.isArray(value) ? (
-                      <div className="space-y-1">
-                        {value.map((item, index) => (
-                          <div key={index} className="text-xs bg-white rounded p-1 border">
-                            {typeof item === 'object' ? (
-                              <div className="space-y-1">
-                                {Object.entries(item).map(([subKey, subValue]) => (
-                                  <div key={subKey}>
-                                    <span className="font-medium">{subKey}:</span> {String(subValue)}
-                                  </div>
-                                ))}
-                              </div>
-                            ) : (
-                              String(item)
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-xs bg-white rounded p-1 border">
-                        {Object.entries(value).map(([subKey, subValue]) => (
-                          <div key={subKey}>
-                            <span className="font-medium">{subKey}:</span> {String(subValue)}
-                          </div>
-                        ))}
-                      </div>
-                    )
-                  ) : (
-                    <span className={typeof value === 'boolean' ? 
-                      (value ? 'text-green-600' : 'text-red-600') : 
-                      'text-gray-900'
-                    }>
-                      {String(value)}
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <>
+        {data.map((item, index) => (
+          <table
+            key={index}
+            className="w-full text-sm text-left text-gray-700 border border-gray-300 mb-3"
+          >
+            <tbody>
+              {Object.entries(item).map(([key, value]) => (
+                <tr key={key} className="border-b">
+                  <td className="font-semibold px-2 py-1 bg-gray-100 w-1/3">{key}</td>
+                  <td className="px-2 py-1">{String(value)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ))}
+      </>
     );
-  };
+  }
+
+  // Handle single object
+  return (
+    <table className="w-full text-sm text-left text-gray-700 border border-gray-300 mb-3">
+      <tbody>
+        {Object.entries(data).map(([key, value]) => (
+          <tr key={key} className="border-b">
+            <td className="font-semibold px-2 py-1 bg-gray-100 w-1/3">{key}</td>
+            <td className="px-2 py-1">{String(value)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
   // Get unique actions for filter dropdown
   const uniqueActions = Array.from(new Set(logs.map(log => log.operation)));
   const actionOptions = [
-    { value: '', label: 'All Actions' },
+    { value: '', label: t('auditLogs.filters.allActions') },
     ...uniqueActions.map(action => ({ value: action, label: action }))
   ];
 
@@ -283,7 +262,7 @@ const AuditLogs: React.FC = () => {
             className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-4 transition-colors duration-200"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('common.back')} to Home
+            {t('back.toHome')}
           </Link>
           
           <div className="flex items-center justify-between">
@@ -292,13 +271,13 @@ const AuditLogs: React.FC = () => {
                 {t('pages.audit.title')}
               </h1>
               <p className="text-gray-600">
-                Monitor system activities and user actions
+                {t('auditLogs.messages.description')}
               </p>
             </div>
             
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <Activity className="h-4 w-4" />
-              <span>{filteredLogs.length} logs found</span>
+              <span>{t('auditLogs.messages.logsFound', { count: filteredLogs.length })}</span>
             </div>
           </div>
         </div>
@@ -308,7 +287,7 @@ const AuditLogs: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="md:col-span-2">
               <InputField
-                placeholder="Search logs by user, action, resource, or details..."
+                 placeholder={t('auditLogs.filters.searchPlaceholder')}
                 icon={<Search className="h-4 w-4" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -320,7 +299,7 @@ const AuditLogs: React.FC = () => {
                 options={actionOptions}
                 value={actionFilter}
                 onSelect={setActionFilter}
-                placeholder="Filter by action"
+                placeholder={t('auditLogs.filters.actionPlaceholder')}
                 icon={<Filter className="h-4 w-4" />}
               />
             </div>
@@ -349,7 +328,7 @@ const AuditLogs: React.FC = () => {
                     {t('pages.audit.ipAddress')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                      {t('auditLogs.table.actions')}
                   </th>
                 </tr>
               </thead>
@@ -397,7 +376,7 @@ const AuditLogs: React.FC = () => {
           {filteredLogs.length === 0 && !isLoading && (
             <div className="text-center py-12">
               <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">No audit logs found</p>
+              <p className="text-gray-500">  {t('auditLogs.messages.noLogs')}</p>
             </div>
           )}
 
@@ -405,7 +384,7 @@ const AuditLogs: React.FC = () => {
           {totalPages > 1 && (
             <div className="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
               <div className="text-sm text-gray-700">
-                Page {currentPage + 1} of {totalPages}
+                 {t('auditLogs.pagination.pageInfo', { current: currentPage + 1, total: totalPages })}
               </div>
               
               <div className="flex space-x-2">
@@ -435,7 +414,7 @@ const AuditLogs: React.FC = () => {
         <PopupDialog
           isOpen={showDetailsDialog}
           onClose={() => setShowDetailsDialog(false)}
-          title="Audit Log Details"
+          title={t('auditLogs.messages.auditLogsDetail')}
           size="lg"
         >
           {selectedLog && (
@@ -487,13 +466,17 @@ const AuditLogs: React.FC = () => {
                   {parseDetailsWithJson(selectedLog.details).map((part, index) => (
                     <div key={index}>
                       {part.type === 'text' ? (
-                        <div className="text-sm text-gray-900 font-medium capitalize">
+                        <div className="text-sm text-blue-600 font-medium capitalize">
                           {part.content}
                         </div>
                       ) : (
                         <div>
                           <div className="text-xs text-gray-600 uppercase tracking-wide font-medium mb-1">
-                            {index === 1 ? 'Original Data' : index === 3 ? 'Updated Data' : 'Data'}
+                            {index === 1
+                              ? t('auditLogs.labels.original')
+                              : index === 3
+                              ? t('auditLogs.labels.updated')
+                              : t('auditLogs.labels.generic')}
                           </div>
                           {renderJsonAsTable(part.content)}
                         </div>
@@ -506,7 +489,7 @@ const AuditLogs: React.FC = () => {
               {selectedLog.userAgent && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    User Agent
+                     {t('auditLogs.labels.userAgent')}
                   </label>
                   <div className="bg-gray-50 rounded-lg p-3">
                     <p className="text-sm text-gray-900 break-all">

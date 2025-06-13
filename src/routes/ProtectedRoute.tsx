@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import LoaderOverlay from '../components/LoaderOverlay';
+import { useTranslation } from 'react-i18next';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -19,9 +20,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { isAuthenticated, user, isLoading } = useAuth();
   const location = useLocation();
+  const { t } = useTranslation();
+
 
   if (isLoading) {
-    return <LoaderOverlay isVisible={true} message="Checking authentication..." />;
+     return <LoaderOverlay isVisible={true} message={t('auth.checkingAuth')} />;
   }
 
   if (!isAuthenticated) {

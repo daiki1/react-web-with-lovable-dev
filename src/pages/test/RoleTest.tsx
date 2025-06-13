@@ -110,7 +110,7 @@ const RoleTest: React.FC = () => {
             className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-4 transition-colors duration-200"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('common.back')} to Home
+            {t('back.toHome')}
           </Link>
           
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -160,7 +160,7 @@ const RoleTest: React.FC = () => {
               {result.status === 'error' && result.error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                   <h4 className="text-sm font-medium text-red-800 mb-2">
-                    Error:
+                    {t('common.error')}:
                   </h4>
                   <p className="text-xs text-red-700">
                     {result.error}
@@ -180,19 +180,19 @@ const RoleTest: React.FC = () => {
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="font-medium">/api/test/all</span>
-              <span className="text-gray-600">Public access - Available to all users</span>
+              <span className="text-gray-600">{t('pages.roleTest.publicAccess')}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">/api/test/user</span>
-              <span className="text-gray-600">User access - Requires authentication</span>
+              <span className="text-gray-600">{t('pages.roleTest.userAccess')}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">/api/test/admin</span>
-              <span className="text-gray-600">Admin access - Requires ADMIN role</span>
+              <span className="text-gray-600">{t('pages.roleTest.adminAccess')}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">/api/test/auditor</span>
-              <span className="text-gray-600">Auditor access - Requires AUDITOR role</span>
+              <span className="text-gray-600">{t('pages.roleTest.auditorAccess')}</span>
             </div>
           </div>
         </div>

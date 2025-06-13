@@ -64,7 +64,7 @@ const Login: React.FC = () => {
               {t('auth.login')}
             </h1>
             <p className="text-gray-600">
-              Welcome back! Please sign in to your account.
+              {t('auth.welcomeBack')}
             </p>
           </div>
 
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
           {/* Login Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <InputField
-              label={t('auth.username')}
+              label={t('auth.usernameOrEmail')} 
               type="text"
               icon={<Mail className="h-4 w-4" />}
               error={errors.username?.message}

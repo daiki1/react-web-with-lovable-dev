@@ -93,7 +93,7 @@ const ResetPassword: React.FC = () => {
             </p>
             {email && (
               <p className="text-sm text-orange-600 mt-2">
-                Sent to: {email}
+                {t('auth.sendTo')} {email}
               </p>
             )}
           </div>
@@ -110,7 +110,7 @@ const ResetPassword: React.FC = () => {
                 required: t('validation.required'),
                 pattern: {
                   value: /^\d{5}$/,
-                  message: 'Please enter a valid 5-digit code',
+                  message: t('auth.enterValidCode'),
                 },
               })}
             />
@@ -158,7 +158,7 @@ const ResetPassword: React.FC = () => {
               to="/forgot-password"
               className="block text-orange-600 hover:text-orange-700 text-sm font-medium transition-colors duration-200"
             >
-              Didn't receive the code? Request a new one
+              {t('auth.didNotReceiveCode')}
             </Link>
             
             <Link
@@ -166,7 +166,7 @@ const ResetPassword: React.FC = () => {
               className="inline-flex items-center text-orange-600 hover:text-orange-700 text-sm font-medium transition-colors duration-200"
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
-              {t('common.back')} to Login
+              {t('back.toLogin')}
             </Link>
           </div>
         </div>

@@ -1,5 +1,9 @@
 
 {
+  "back":{
+    "toHome": "Volver al Inicio",
+    "toLogin": "Volver al Inicio de Sesión"
+  },
   "common": {
     "loading": "Cargando...",
     "error": "Error",
@@ -26,6 +30,7 @@
     "forgotPassword": "Olvidé mi Contraseña",
     "resetPassword": "Restablecer Contraseña",
     "username": "Nombre de Usuario",
+    "usernameOrEmail": "Nombre de Usuario o Correo Electrónico",
     "email": "Correo Electrónico",
     "password": "Contraseña",
     "confirmPassword": "Confirmar Contraseña",
@@ -43,7 +48,23 @@
     "newPassword": "Nueva Contraseña",
     "repeatPassword": "Repetir Contraseña",
     "requestCode": "Solicitar Código",
-    "enterResetCode": "Ingresa el código de 5 dígitos enviado a tu correo"
+    "enterResetCode": "Ingresa el código de 5 dígitos enviado a tu correo",
+    "invalidAccessToken": "Token de acceso no válido recibido del servidor.",
+    "invalidTokenDecode": "Token no válido recibido: no se pudo decodificar la información del usuario.",
+    "useAuthOutsideProvider": "useAuth debe usarse dentro de un AuthProvider.",
+    "checkingAuth": "Verificando autenticación...",
+    "forgotPasswordInstructions": "Ingresa tu correo electrónico para recibir un código de restablecimiento de contraseña.",
+    "welcomeBack": "¡Bienvenido de nuevo! Por favor, inicia sesión en tu cuenta.",
+    "createAccount": "Crea tu cuenta para comenzar.",
+    "sendTo": "Enviar a",
+    "enterValidCode": "Por favor, ingresa un código de 5 dígitos válido",
+    "didNotReceiveCode": "¿No recibiste el código? Solicita uno nuevo"
+  },
+  "ui": {
+    "selectPlaceholder": "Selecciona una opción",
+    "noOptions": "No se encontraron opciones",
+    "search": "Buscar...",
+    "enterUsername": "Ingresa nombre de usuario"
   },
   "validation": {
     "required": "Este campo es obligatorio",
@@ -60,13 +81,92 @@
     "localization": "Localización",
     "changeLanguage": "Cambiar Idioma"
   },
+  "userForm": {
+    "errors": {
+      "usernameRequired": "El nombre de usuario es obligatorio",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "invalidEmail": "Por favor, introduce una dirección de correo electrónico válida"
+    },
+    "success": {
+      "update": "Usuario actualizado exitosamente"
+    },
+    "failure": {
+      "update": "No se pudo actualizar el usuario"
+    },
+    "placeholder": {
+      "email": "Introduce una dirección de correo electrónico"
+    },
+    "buttons": {
+      "save": "Guardar cambios",
+      "saving": "Guardando..."
+    }
+  },
+   "userRoles": {
+    "errors": {
+      "loadFailed": "Error al cargar los roles",
+      "updateFailed": "Error al actualizar los roles del usuario",
+      "atLeastOne": "El usuario debe tener al menos un rol"
+    },
+    "success": {
+      "update": "Roles del usuario actualizados correctamente"
+    },
+    "loading": "Cargando roles...",
+    "title": "Cambiar roles del usuario",
+    "selectLabel": "Selecciona roles (se requiere al menos uno)",
+    "buttons": {
+      "save": "Guardar cambios",
+      "saving": "Guardando..."
+    }
+  },
+  "auditLogs": {
+    "error": {
+      "loadFailed": "No se pudieron cargar los registros de auditoría"
+    },
+    "filters": {
+      "allActions": "Todas las acciones",
+      "searchPlaceholder": "Buscar registros por usuario, acción, recurso o detalles...",
+      "actionPlaceholder": "Filtrar por acción"
+    },
+    "table": {
+      "actions": "Acciones"
+    },
+    "messages": {
+      "auditLogsDetail": "Detalle de Registros de Auditoría",
+      "noLogs": "No se encontraron registros de auditoría",
+      "description": "Monitorea actividades del sistema y acciones de usuarios",
+      "logsFound": "{{count}} registros encontrados"
+    },
+    "pagination": {
+      "pageInfo": "Página {{current}} de {{total}}"
+    },
+    "labels": {
+      "userAgent": "Agente de usuario",
+      "original": "Datos originales",
+      "updated": "Datos actualizados",
+      "generic": "Datos"
+    }
+  },
   "pages": {
     "home": {
       "welcome": "Bienvenido al Portal de Administración",
-      "description": "Gestiona tu aplicación con facilidad"
+      "description": "Gestiona tu aplicación con facilidad",
+      "adminPortal": "Portal de Administración",
+      "userManagement": "Gestión de Usuarios",
+      "multiLanguage": "Multilenguaje",
+      "multiLanguageDesc": "Disponible en inglés y español",
+      "auditLogs": "Registros de Auditoría",
+      "auditAccess": {
+        "granted": "Ver disponible",
+        "denied": "Contacta al administrador para acceso"
+      },
+      "userAccess": {
+        "granted": "Acceso completo disponible",
+        "denied": "Contacta al administrador para acceso"
+      }
     },
     "users": {
       "title": "Gestión de Usuarios",
+      "description": "Administrar usuarios del sistema y sus permisos",
       "addUser": "Agregar Usuario",
       "editUser": "Editar Usuario",
       "deleteUser": "Eliminar Usuario",
@@ -81,10 +181,24 @@
       "actions": "Acciones",
       "userDeleted": "Usuario eliminado exitosamente",
       "userUpdated": "Usuario actualizado exitosamente",
-      "confirmDelete": "¿Estás seguro de que quieres eliminar este usuario?"
+      "confirmDelete": "¿Estás seguro de que quieres eliminar este usuario?",
+      "loadError": "Error al cargar usuarios",
+      "invalidId": "ID de usuario inválido",
+      "statusUpdated": "Usuario {{status}} correctamente",
+      "statusUpdateError": "Error al actualizar el estado del usuario",
+      "deleteError": "Error al eliminar usuario",      
+      "usersFound": "{{count}} usuarios encontrados",
+      "userColumn": "Usuario",
+      "editTitle": "Editar usuario",
+      "roleTitle": "Cambiar roles",
+      "pagination": "Página {{current}} de {{total}}",
+      "searchPlaceholder": "Buscar usuarios por nombre de usuario o correo electrónico...",
+      "deactivateTitle": "Desactivar usuario",
+      "activateTitle": "Activar usuario"
     },
     "audit": {
       "title": "Registros de Auditoría",
+      "description": "Ver registros y actividades del sistema",
       "timestamp": "Fecha y Hora",
       "user": "Usuario",
       "action": "Acción",
@@ -100,7 +214,11 @@
       "testAdmin": "Probar API de Admin",
       "testAuditor": "Probar API de Auditor",
       "response": "Respuesta",
-      "testing": "Probando..."
+      "testing": "Probando...",
+      "publicAccess": "Acceso público - Disponible para todos los usuarios",
+      "userAccess": "Acceso de usuario - Requiere autenticación",
+      "adminAccess": "Acceso de administrador - Requiere rol ADMIN",
+      "auditorAccess": "Acceso de auditor - Requiere rol AUDITOR"
     },
     "localization": {
       "title": "Localización",
@@ -108,11 +226,21 @@
       "country": "País",
       "state": "Estado",
       "city": "Ciudad",
+      "countries": "Países",
+      "states": "Estados",
+      "cities" : "Ciudades",
+      "citiesLoaded": "Ciudades Cargadas",
       "selectCountry": "Selecciona un país",
       "selectState": "Selecciona un estado",
       "selectCity": "Selecciona una ciudad",
       "loadMoreCities": "Cargar Más Ciudades",
-      "noMoreCities": "No hay más ciudades disponibles"
+      "noMoreCities": "No hay más ciudades disponibles",
+      "errors": {
+        "countries": "Error al cargar países",
+        "states": "Error al cargar estados",
+        "cities": "Error al cargar ciudades"
+      },
+      "currentSelection": "Selección Actual"
     }
   },
   "roles": {

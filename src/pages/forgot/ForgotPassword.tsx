@@ -70,7 +70,7 @@ const ForgotPassword: React.FC = () => {
               {t('auth.forgotPassword')}
             </h1>
             <p className="text-gray-600">
-              Enter your email to receive a password reset code.
+              {t('auth.forgotPasswordInstructions')}
             </p>
           </div>
 
@@ -108,7 +108,7 @@ const ForgotPassword: React.FC = () => {
               className="inline-flex items-center text-orange-600 hover:text-orange-700 text-sm font-medium transition-colors duration-200"
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
-              {t('common.back')} to Login
+              {t('back.toLogin')}
             </Link>
           </div>
         </div>

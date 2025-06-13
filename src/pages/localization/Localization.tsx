@@ -80,7 +80,7 @@ const Localization: React.FC = () => {
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to load countries',
+        description: error.response?.data?.message || t('pages.localization.errors.countries'),
         variant: 'destructive',
       });
     } finally {
@@ -95,7 +95,7 @@ const Localization: React.FC = () => {
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to load states',
+        description: error.response?.data?.message || t('pages.localization.errors.states'),
         variant: 'destructive',
       });
     }
@@ -127,7 +127,7 @@ const Localization: React.FC = () => {
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to load cities',
+        description: error.response?.data?.message || t('pages.localization.errors.cities'),
         variant: 'destructive',
       });
     } finally {
@@ -169,7 +169,7 @@ const Localization: React.FC = () => {
             className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-4 transition-colors duration-200"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('common.back')} to Home
+            {t('back.toHome')} 
           </Link>
           
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -247,7 +247,7 @@ const Localization: React.FC = () => {
             <div className="mt-8 p-4 bg-orange-50 border border-orange-200 rounded-lg">
               <h3 className="text-lg font-semibold text-orange-900 mb-3 flex items-center">
                 <MapPin className="h-5 w-5 mr-2" />
-                Current Selection
+                {t('pages.localization.currentSelection')}
               </h3>
               
               <div className="space-y-2 text-sm">
@@ -285,15 +285,15 @@ const Localization: React.FC = () => {
           <div className="mt-6 grid grid-cols-3 gap-4 text-center">
             <div className="p-3 bg-gray-50 rounded-lg">
               <p className="text-2xl font-bold text-orange-600">{countries.length}</p>
-              <p className="text-xs text-gray-600">Countries</p>
+              <p className="text-xs text-gray-600">{t('pages.localization.countries')}</p>
             </div>
             <div className="p-3 bg-gray-50 rounded-lg">
               <p className="text-2xl font-bold text-orange-600">{states.length}</p>
-              <p className="text-xs text-gray-600">States</p>
+              <p className="text-xs text-gray-600">{t('pages.localization.states')}</p>
             </div>
             <div className="p-3 bg-gray-50 rounded-lg">
               <p className="text-2xl font-bold text-orange-600">{cities.length}</p>
-              <p className="text-xs text-gray-600">Cities Loaded</p>
+              <p className="text-xs text-gray-600">{t('pages.localization.citiesLoaded')}</p>
             </div>
           </div>
         </div>

@@ -79,7 +79,7 @@ const UserManagement: React.FC = () => {
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to load users',
+        description: error.response?.data?.message || t('pages.users.loadError'),
         variant: 'destructive',
       });
     } finally {
@@ -92,7 +92,7 @@ const UserManagement: React.FC = () => {
       console.error('Invalid userId:', userId);
       toast({
         title: t('common.error'),
-        description: 'Invalid user ID',
+        description: t('pages.users.invalidId'),
         variant: 'destructive',
       });
       return;
@@ -106,13 +106,15 @@ const UserManagement: React.FC = () => {
       
       toast({
         title: t('common.success'),
-        description: `User ${!currentStatus ? 'activated' : 'deactivated'} successfully`,
+        description: t('pages.users.statusUpdated', {
+          status: !currentStatus ? t('common.activated') : t('common.deactivated')
+        }),
         variant: 'default',
       });
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to update user status',
+        description: error.response?.data?.message || t('pages.users.loadError'),
         variant: 'destructive',
       });
     }
@@ -134,7 +136,7 @@ const UserManagement: React.FC = () => {
     } catch (error: any) {
       toast({
         title: t('common.error'),
-        description: error.response?.data?.message || 'Failed to delete user',
+        description: error.response?.data?.message || t('pages.users.deleteError'),
         variant: 'destructive',
       });
     }
@@ -200,7 +202,7 @@ const UserManagement: React.FC = () => {
             className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-4 transition-colors duration-200"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('common.back')} to Home
+            {t('back.toHome')}
           </Link>
           
           <div className="flex items-center justify-between">
@@ -209,16 +211,16 @@ const UserManagement: React.FC = () => {
                 {t('pages.users.title')}
               </h1>
               <p className="text-gray-600">
-                Manage user accounts and permissions
+                 {t('pages.users.description')}
               </p>
             </div>
             
-            <CustomButton
+            {/*<CustomButton
               variant="primary"
               icon={<UserPlus className="h-4 w-4" />}
             >
               {t('pages.users.addUser')}
-            </CustomButton>
+            </CustomButton>*/}
           </div>
         </div>
 
@@ -227,7 +229,7 @@ const UserManagement: React.FC = () => {
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <InputField
-                placeholder="Search by username or email..."
+                placeholder={t('pages.users.searchPlaceholder')}
                 icon={<Search className="h-4 w-4" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -236,7 +238,7 @@ const UserManagement: React.FC = () => {
             
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <Users className="h-4 w-4" />
-              <span>{filteredUsers.length} users found</span>
+              <span>{t('pages.users.usersFound', { count: filteredUsers.length })}</span>
             </div>
           </div>
         </div>
@@ -248,7 +250,7 @@ const UserManagement: React.FC = () => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    User
+                    {t('pages.users.userColumn')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     {t('pages.users.roles')}
@@ -301,7 +303,7 @@ const UserManagement: React.FC = () => {
                               ? 'text-orange-600 hover:text-orange-700'
                               : 'text-gray-400 hover:text-gray-500'
                           }`}
-                          title={user.active ? 'Deactivate user' : 'Activate user'}
+                          title={t(user.active ? 'pages.users.deactivateTitle' : 'pages.users.activateTitle')}
                         >
                           {user.active ? (
                             <ToggleRight className="h-5 w-5" />
@@ -313,7 +315,7 @@ const UserManagement: React.FC = () => {
                         <button
                           onClick={() => handleEditClick(user)}
                           className="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-                          title="Edit user"
+                          title={t('pages.users.editTitle')}
                         >
                           <Edit className="h-4 w-4" />
                         </button>
@@ -321,7 +323,7 @@ const UserManagement: React.FC = () => {
                         <button
                           onClick={() => handleRoleClick(user)}
                           className="text-purple-600 hover:text-purple-700 transition-colors duration-200"
-                          title="Change roles"
+                          title={t('pages.users.roleTitle')}
                         >
                           <UserCheck className="h-4 w-4" />
                         </button>
@@ -344,9 +346,8 @@ const UserManagement: React.FC = () => {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
-              <div className="text-sm text-gray-700">
-                Page {currentPage + 1} of {totalPages}
-              </div>
+              <div>{t('pages.users.pagination', { current: currentPage + 1, total: totalPages })}</div>
+
               
               <div className="flex space-x-2">
                 <CustomButton

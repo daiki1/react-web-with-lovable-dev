@@ -69,7 +69,7 @@ const Register: React.FC = () => {
               {t('auth.register')}
             </h1>
             <p className="text-gray-600">
-              Create your account to get started.
+              {t('auth.createAccount')}
             </p>
           </div>
 
