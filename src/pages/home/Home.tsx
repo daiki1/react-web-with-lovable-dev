@@ -79,8 +79,8 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">A</span>
+              <div className="w-14 h-14 bg-white-500 rounded-full flex items-center justify-center mx-auto">
+                <img src="/leaf.svg" alt="Leaf" className="h-10 w-10" />
               </div>
               <h1 className="ml-3 text-xl font-semibold text-gray-900">
                 {t('pages.home.adminPortal')}

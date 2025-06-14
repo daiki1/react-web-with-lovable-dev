@@ -56,9 +56,9 @@ const Login: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="card-container animate-slide-in">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Lock className="h-8 w-8 text-white" />
+          <div className="text-center mb-8">            
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+              <img src="/leaf.svg" alt="Leaf" className="h-14 w-14" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               {t('auth.login')}
