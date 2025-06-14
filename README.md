@@ -210,22 +210,22 @@ After connecting to GitHub, you can deploy the application on any hosting platfo
 ## Screenshots
 
 ### Login Screen
-![Login Screen](screenshoots/01_login.png)
+![Login Screen](screenshoots/01_login.PNG)
 
 ### Home Screen in english
-![Home Screen](screenshoots/02_home_en.png)
+![Home Screen](screenshoots/02_home_en.PNG)
 
 ### Home Screen in spanish
-![Home Screen](screenshoots/03_home_es.png)
+![Home Screen](screenshoots/03_home_es.PNG)
 
 ### Test Screen
-![Test Screen](screenshoots/04_test.png)
+![Test Screen](screenshoots/04_test.PNG)
 
 ### Localization Screen
-![Localization Screen](screenshoots/05_localization.png)
+![Localization Screen](screenshoots/05_localization.PNG)
 
 ### User management Screen
-![User management Screen](screenshoots/06_user_managment.png)
+![User management Screen](screenshoots/06_user_managment.PNG)
 
 ### Audit logs Screen
-![Audit logs Screen](screenshoots/07_audit_logs.png)
+![Audit logs Screen](screenshoots/07_audit_logs.PNG)
