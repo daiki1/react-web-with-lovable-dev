@@ -20,6 +20,7 @@ A production-ready React project that works seamlessly with a Spring Boot backen
 - [Internationalization](#internationalization)
 - [API Integration](#api-integration)
 - [Deployment](#deployment)
+- [Screenshoots](#screenshoots)
 
 ## Features
 
@@ -202,3 +203,29 @@ After connecting to GitHub, you can deploy the application on any hosting platfo
 ---
 
 **Note**: Make sure the Spring Boot backend is running and accessible before starting the React application for full functionality.
+
+
+---
+
+## Screenshots
+
+### Login Screen
+![Login Screen](screenshoots/01_login.png)
+
+### Home Screen in english
+![Home Screen](screenshoots/02_home_en.png)
+
+### Home Screen in spanish
+![Home Screen](screenshoots/03_home_es.png)
+
+### Test Screen
+![Test Screen](screenshoots/04_test.png)
+
+### Localization Screen
+![Localization Screen](screenshoots/05_localization.png)
+
+### User management Screen
+![User management Screen](screenshoots/06_user_managment.png)
+
+### Audit logs Screen
+![Audit logs Screen](screenshoots/07_audit_logs.png)
