@@ -128,6 +128,24 @@ Or with yarn:
 yarn dev
 ```
 
+###  Alternative Installation: Run with Docker
+This project supports Dockerized builds for quick deployment and API environment flexibility.
+
+####  Run with Docker (Backend is also Dockerized)
+If your backend is running inside Docker (e.g., on port `8080`), use:
+```bash
+docker build --build-arg VITE_API_URL=http://host.docker.internal:8080 -t my-react-app .
+docker run -p 8081:80 my-react-app
+```
+Note: host.docker.internal lets the frontend container access your host machine (where the backend is running).
+
+#### Run with Docker (Backend is local or external)
+If your backend is running outside Docker (e.g., directly on your host), run:
+```bash
+docker build --build-arg VITE_API_URL=http://localhost:8080 -t my-react-app .
+docker run -p 8081:80 my-react-app
+```
+
 3. **Open your browser** and navigate to `http://localhost:8081`
 
 The application will automatically reload when you make changes to the source code.

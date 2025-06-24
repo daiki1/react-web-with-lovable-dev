@@ -7,7 +7,7 @@ import i18n from '../i18n';
  * Base API configuration
  * Connects to Spring Boot backend on port 8080
  */
-export const API_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 // Create axios instance with default configuration
 const api = axios.create({
